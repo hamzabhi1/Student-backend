@@ -18,24 +18,17 @@ const allowedOrigins = [
   "https://student-frontend-i1go3nd7r-hamzabhi1s-projects.vercel.app"
 ];
 
+// Allow CORS from all origins to avoid preflight failures on Vercel.
+// If you want to restrict origins later, replace with a whitelist.
 app.use(
   cors({
-    origin: function (origin, callback) {
-      // allow requests with no origin (like Postman)
-      if (!origin) return callback(null, true);
-
-      if (allowedOrigins.includes(origin)) {
-        return callback(null, true);
-      } else {
-        return callback(new Error("Not allowed by CORS"));
-      }
-    },
+    origin: true,
     methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
-    credentials: true
+    credentials: true,
   })
 );
 
-/* ✅ THIS IS CRITICAL (preflight fix) */
+// Ensure preflight requests are handled
 app.options("*", cors());
 
 app.get("/", (req, res) => {
