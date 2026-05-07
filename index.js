@@ -9,7 +9,7 @@ connectDB();
 
 app.use(
   cors({
-    origin: "http://localhost:5173",
+    origin: "student-backend-q7rt4lsvv-hamzabhi1s-projects.vercel.app3",
     credentials: true,
   }),
 );
