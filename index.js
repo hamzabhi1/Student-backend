@@ -9,7 +9,7 @@ connectDB();
 
 app.use(
   cors({
-    origin: "student-backend-q7rt4lsvv-hamzabhi1s-projects.vercel.app3",
+    origin: "https://student-frontend-d3l9p7yj2-hamzabhi1s-projects.vercel.app",
     credentials: true,
   }),
 );
@@ -24,5 +24,3 @@ app.use("/api/auth", authRoutes);
 app.get("/", (req, res) => {
   res.send("Hello World!");
 });
-
-
