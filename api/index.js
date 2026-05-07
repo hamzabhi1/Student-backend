@@ -31,6 +31,20 @@ app.use(
 // Ensure preflight requests are handled
 app.options("*", cors());
 
+// Fallback: explicitly set CORS headers on all responses to guarantee
+// `Access-Control-Allow-*` headers are present (helps in some serverless setups).
+app.use((req, res, next) => {
+  res.header("Access-Control-Allow-Origin", "*");
+  res.header(
+    "Access-Control-Allow-Headers",
+    "Origin, X-Requested-With, Content-Type, Accept, Authorization"
+  );
+  res.header("Access-Control-Allow-Methods", "GET,POST,PUT,DELETE,OPTIONS");
+  // For preflight requests, end early
+  if (req.method === "OPTIONS") return res.sendStatus(204);
+  next();
+});
+
 app.get("/", (req, res) => {
   res.send("Backend Working Successfully");
 });
