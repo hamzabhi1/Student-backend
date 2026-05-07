@@ -12,7 +12,7 @@ connectDB();
 
 app.use(
   cors({
-    origin: "*",
+    origin: "https://student-frontend-gl0lhd7nt-hamzabhi1s-projects.vercel.app",
     credentials: true,
   })
 );
