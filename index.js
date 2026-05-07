@@ -24,4 +24,7 @@ app.use("/api/auth", authRoutes);
 app.get("/", (req, res) => {
   res.send("Hello World!");
 });
-export default app;
+// Export a serverless-compatible handler for Vercel
+export default function handler(req, res) {
+  return app(req, res);
+}
