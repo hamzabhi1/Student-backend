@@ -8,48 +8,25 @@ dotenv.config();
 
 const app = express();
 
-// DB connect
 connectDB();
 
 app.use(express.json());
 
-/* ✅ CORS FIX (IMPORTANT FOR VERCEL) */
 const allowedOrigins = [
-  "https://student-frontend-i1go3nd7r-hamzabhi1s-projects.vercel.app"
+  process.env.FRONTEND_URL || "https://student-frontend-three-phi.vercel.app",
 ];
 
-// Allow CORS from all origins to avoid preflight failures on Vercel.
-// If you want to restrict origins later, replace with a whitelist.
 app.use(
   cors({
-    origin: true,
-    methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
+    origin: allowedOrigins,
     credentials: true,
+    methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
+    allowedHeaders: ["Content-Type", "Authorization"],
   })
 );
 
-// Ensure preflight requests are handled
+// IMPORTANT
 app.options("*", cors());
-
-// Fallback: explicitly set CORS headers on all responses to guarantee
-// `Access-Control-Allow-*` headers are present (helps in some serverless setups).
-app.use((req, res, next) => {
-  const requestOrigin = req.get("origin");
-
-  // If the incoming origin is in our allowed list, echo it back.
-  if (allowedOrigins.includes(requestOrigin)) {
-    res.header("Access-Control-Allow-Origin", requestOrigin);
-  }
-
-  res.header(
-    "Access-Control-Allow-Headers",
-    "Origin, X-Requested-With, Content-Type, Accept, Authorization"
-  );
-  res.header("Access-Control-Allow-Methods", "GET,POST,PUT,DELETE,OPTIONS");
-  // For preflight requests, end early
-  if (req.method === "OPTIONS") return res.sendStatus(204);
-  next();
-});
 
 app.get("/", (req, res) => {
   res.send("Backend Working Successfully");
