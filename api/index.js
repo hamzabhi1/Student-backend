@@ -34,7 +34,13 @@ app.options("*", cors());
 // Fallback: explicitly set CORS headers on all responses to guarantee
 // `Access-Control-Allow-*` headers are present (helps in some serverless setups).
 app.use((req, res, next) => {
-  res.header("Access-Control-Allow-Origin", "*");
+  const requestOrigin = req.get("origin");
+
+  // If the incoming origin is in our allowed list, echo it back.
+  if (allowedOrigins.includes(requestOrigin)) {
+    res.header("Access-Control-Allow-Origin", requestOrigin);
+  }
+
   res.header(
     "Access-Control-Allow-Headers",
     "Origin, X-Requested-With, Content-Type, Accept, Authorization"
