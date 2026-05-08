@@ -3,6 +3,7 @@ import cors from "cors";
 import authRoutes from "../routes/authRoutes.js";
 import connectDB from "../config/db.js";
 import dotenv from "dotenv";
+import serverless from "serverless-http";
 
 dotenv.config();
 
@@ -34,4 +35,4 @@ app.get("/", (req, res) => {
 
 app.use("/api/auth", authRoutes);
 
-export default app;
+export default serverless(app);
